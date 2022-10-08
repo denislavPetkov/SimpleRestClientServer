@@ -21,14 +21,10 @@ public class Client {
         HttpClient client = new DefaultHttpClient();
         System.out.println("\nCurrent sum is " + getCurrentSum(client));
 
-        double num1 = ThreadLocalRandom.current().nextDouble(0, 100);
-        double num2 = ThreadLocalRandom.current().nextDouble(0, 100);
-        System.out.println(String.format("\nNew sum of %f and %f is %f", num1, num2, getNewSum(client,num1,num2)));
-
         System.out.println(String.format("XML response of current sum: %s",getXmlSum(client)));
 
-        num1 = ThreadLocalRandom.current().nextDouble(0, 100);
-        num2 = ThreadLocalRandom.current().nextDouble(0, 100);
+        double num1 = ThreadLocalRandom.current().nextDouble(0, 100);
+        double num2 = ThreadLocalRandom.current().nextDouble(0, 100);
 
         System.out.println(String.format("New sum created: %s",createNewSum(client,num1,num2)));
     }
@@ -36,15 +32,6 @@ public class Client {
 
     private static double getCurrentSum(HttpClient client) throws IOException {
         HttpGet request = new HttpGet("http://localhost:8080/sum");
-        HttpResponse response = client.execute(request);
-
-        ObjectMapper xmlMapper = new XmlMapper();
-        Sum sum = xmlMapper.readValue(response.getEntity().getContent(),Sum.class);
-        return sum.getResult();
-    }
-
-    private static double getNewSum(HttpClient client, double num1, double num2) throws IOException {
-        HttpGet request = new HttpGet(String.format("http://localhost:8080/sum/update?num1=%f&num2=%f", num1, num2));
         HttpResponse response = client.execute(request);
 
         ObjectMapper xmlMapper = new XmlMapper();
@@ -67,7 +54,7 @@ public class Client {
 
     private static String createNewSum(HttpClient client, double num1, double num2) throws IOException {
         Sum newSum = new Sum(num1, num2);
-        HttpPost request = new HttpPost("http://localhost:8080/sum/create");
+        HttpPost request = new HttpPost("http://localhost:8080/sum/update");
 
         XmlMapper xmlMapper = new XmlMapper();
         String xmlSum = xmlMapper.writeValueAsString(newSum);

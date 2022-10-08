@@ -20,7 +20,7 @@ public class SumController {
         return sum;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/update")
     public Sum newSum(@RequestBody Sum newSum) throws IOException{
         newSum.setResult(newSum.getNum1() + newSum.getNum2());
         XmlMapper xmlMapper = new XmlMapper();
@@ -28,13 +28,6 @@ public class SumController {
         return newSum;
     }
 
-    @GetMapping("/update")
-    public Sum updateSum(@RequestParam double num1, @RequestParam double num2) throws IOException {
-        Sum newSum = new Sum(num1, num2);
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.writeValue(new File(dataFilePath), newSum);
-        return newSum;
-    }
 
 }
 
